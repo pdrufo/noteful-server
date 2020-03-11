@@ -63,13 +63,13 @@ foldersRouter
   .delete((req, res, next) => {
     const { id } = req.params;
     FoldersService.deleteFolder(req.app.get('db'), id)
-      .then(rowsAffected => {
-        if (rowsAffected < 1) {
-          logger.info(`Folder with id ${id} not found`);
-          res.status(404).send('Folder not found');
-        }
-        logger.info(`Folder with id ${id} deleted`);
-        res.status(204).end();
+    .delete((req, res, next) => {
+      FolderService.deleteFolder(
+          req.app.get('db'),
+          req.params.folder_id
+      )
+      .then(numRowsAffected => {
+          res.status(204).end();
       })
       .catch(next);
   })
